@@ -12,12 +12,14 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-		$products = Product::all(); // Retrieve all products from the database
+	public function index()
+	{
+		$products = \DB::table('products')
+			->select('title', 'price', 'description', 'category', 'image')
+			->get();
 
-        return view('products.index', compact('products'));
-    }
+		return view('products.index', compact('products'));
+	}
 
     public function create()
     {
