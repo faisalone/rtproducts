@@ -1,66 +1,94 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Real-Time Product Display with Pusher Integration
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This Laravel application allows you to display products fetched from a public API (Fake Store API). It features real-time updates using **Pusher** whenever a new product is added to the database. The app uses **PHP 8.2** and **Laravel 12**.
 
-## About Laravel
+## Table of Contents
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [Setup Instructions](#setup-instructions)
+- [Usage](#usage)
+- [Testing Real-Time Functionality](#testing-real-time-functionality)
+- [Pusher Integration](#pusher-integration)
+- [License](#license)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Overview
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+This project demonstrates how to use **Pusher** for real-time updates in a Laravel-based product display application. You can add products to the product list via a form, and any new products will appear in real-time on all open client browsers without the need for page refreshes.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Prerequisites
 
-## Learning Laravel
+Before setting up this project, ensure you have the following installed:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **PHP 8.2** or higher
+- **Composer** (for managing dependencies)
+- **Laravel 12**
+- **SQLite** (or another supported database)
+- **Pusher Account** (for real-time broadcasting)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Setup Instructions
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Clone the Repository
 
-## Laravel Sponsors
+```bash
+git clone https://github.com/faisalone/rtproducts.git
+cd rtproducts
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### You can access the app at http://127.0.0.1:8000.
 
-### Premium Partners
+Usage
+Product Management
+Add Products: You can add products by navigating to the "Add Product" form at http://127.0.0.1:8000/products/create.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### View Products
 
-## Contributing
+Products are dynamically displayed on the homepage. Visit the [Homepage](http://127.0.0.1:8000/) to see products update in real time with Pusher integration.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Real-Time Product Updates
+When a new product is added, it will appear immediately in the product list without needing a page refresh, thanks to Pusher integration.
 
-## Code of Conduct
+Testing Real-Time Functionality
+Open the product list in one browser tab.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Open another browser tab and go to the "Add Product" form.
 
-## Security Vulnerabilities
+Add a new product in the second tab and submit the form.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+The new product should appear in real-time in the first tab without refreshing the page.
 
-## License
+Pusher Integration
+1. Setting Up Pusher
+Pusher allows us to push events to the frontend in real-time. The configuration steps are as follows:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Pusher Account: You must have a Pusher account and obtain your App ID, App Key, App Secret, and App Cluster.
+
+.env Configuration: The necessary Pusher credentials are set in the .env file.
+
+env
+Copy
+PUSHER_APP_ID=your-app-id
+PUSHER_APP_KEY=your-app-key
+PUSHER_APP_SECRET=your-app-secret
+PUSHER_APP_CLUSTER=your-app-cluster
+Broadcasting Setup: In the config/broadcasting.php file, the Pusher connection is set as the default broadcaster, and the credentials from .env are used for configuration.
+
+2. Broadcasting the Event
+The ProductUpdated event is responsible for broadcasting updates when a new product is added. Here's the structure of the event class:
+
+
+public function broadcastOn()
+{
+    return new Channel('products');
+}
+
+public function broadcastAs()
+{
+    return 'ProductUpdated';
+}
+
+This ensures that the event is broadcasted to all clients connected to the products channel.
